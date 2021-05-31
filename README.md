@@ -1,0 +1,1 @@
+The goal of this project is to recreate the board game Mastermind, allowing users to play against a computer through the command line. 
