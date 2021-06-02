@@ -1,68 +1,88 @@
-# Generate CPU code
+# Generate and store the computer's code
 module ComputerCode
-  CODE = rand(1111..6666)
+    CPU_CODE = rand(1111..6666).digits.reverse
 end
 
-# Allow human to guess code
-class HumanGuess
-  include ComputerCode
-  @@guess_count = 0
+# Allow the user to play as the codebreaker
+class PlayerBreaks
+    include ComputerCode
+    @@guess_count = 0
 
-  def initialize
-      puts CODE
-      puts "You have 12 chances to crack the computer's 4-digit code."
-      until @@guess_count == 12
-          
-          puts "Enter your 4-digit guess: "
-          @guess = gets.to_i
+    def initialize
+        p CPU_CODE
+        intro_message
+        game_loop
+    end
 
-          @@guess_count += 1
+    def game_loop
+        until @@guess_count == 12
+            get_guess
+            p @guess
+            increment_guess_counter
+            check_for_win
+            display_matching_number_clues
+            display_correct_number_clues
 
-          if CODE == @guess then puts "Code cracked! You win!"
-              break
-          end
+            if @@guess_count == 9
+                then three_guesses_left_warning
+            end
+        end
+        game_over
+    end
 
-          trigger_match_clues()
-          trigger_inclusion_clues()
-      end
-  end
+    def intro_message
+        puts "You have 12 chances to crack the computer's 4-digit code. Usable numbers include 1 - 6"
+    end
 
-  def trigger_match_clues
-      # Transform the computer's code and the player's guesses into arrays to compare digits and trigger clues for matching numbers in the correct position
-      guess_array = @guess.digits.reverse
-      code_array = CODE.digits.reverse
+    def get_guess
+        puts "Please enter your guess: "
+        @guess = gets.to_i.digits.reverse
+    end
 
-      positional_matches = 0
-      index = 0
-      p guess_array
-      p code_array
-      # Loop through the index of each array and compare each element to trigger clues
-      until index == 4
-          if guess_array[index] == code_array[index]
-              then positional_matches += 1
-          end
-          index += 1
-      end
+    def increment_guess_counter
+        @@guess_count += 1
+    end
 
-      puts "#{positional_matches} matching numbers in the correct position."
-  end
+    def check_for_win
+        if @guess == CPU_CODE 
+            then puts "Code cracked! You win!"
+            exit
+        end
+    end
 
-  def trigger_inclusion_clues
-      # Transform the computer's code and the player's guesses into arrays to compare digits and trigger clues for matching numbers
-      guess_array = @guess.digits.reverse
-      code_array = CODE.digits.reverse
+    def display_matching_number_clues
+        positional_matches = 0
+        index = 0
 
-      correct_numbers = 0
+        until index == 4
+            if @guess[index] == CPU_CODE[index]
+                then positional_matches += 1
+            end
+            index += 1
+        end
 
-      # Trigger a correct number clue if the code array contains any numbers found in the guess array
-      guess_array.each do |number| 
-          if code_array.include?(number)
-              correct_numbers += 1
-          end
-      end
-      
-      puts "#{correct_numbers} matching numbers."
-  end
+        puts "#{positional_matches} matching numbers are in the correct position."
+    end
+
+    def display_correct_number_clues
+        correct_numbers = 0
+
+        @guess.each do |number|
+            if CPU_CODE.include?(number)
+                correct_numbers += 1
+            end
+        end
+
+        puts "#{correct_numbers} matching numbers."
+    end
+
+    def three_guesses_left_warning
+        puts "You have 3 guesses left!"
+    end
+
+    def game_over
+        puts "You didn't crack the code! Game over."
+    end
 end
 
-HumanGuess.new
+PlayerBreaks.new
