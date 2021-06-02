@@ -65,15 +65,18 @@ class PlayerBreaks
     end
 
     def display_correct_number_clues
-        correct_numbers = 0
+        correct_numbers = []
+        index = 0
 
-        @guess.each do |number|
-            if @cpu_code.include?(number)
-                correct_numbers += 1
+        4.times do 
+            if @cpu_code.include?(@guess[index])
+                then correct_numbers.append(@guess[index])
             end
+            index += 1
         end
 
-        puts "#{correct_numbers} matching numbers."
+        puts "#{correct_numbers.uniq.size} matching numbers."
+
     end
 
     def three_guesses_left_warning
