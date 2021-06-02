@@ -12,7 +12,6 @@ class PlayerBreaks
 
         until @@guess_count == 12
             get_guess
-            p @guess
             increment_guess_counter
             check_for_win
             display_matching_number_clues
@@ -27,7 +26,6 @@ class PlayerBreaks
 
     def generate_cpu_code
         @cpu_code = [rand(1..6),rand(1..6),rand(1..6),rand(1..6)]
-        p @cpu_code
     end
 
     def intro_message
