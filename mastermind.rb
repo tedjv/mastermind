@@ -59,7 +59,7 @@ class PlayerBreaks
             index += 1
         end
 
-        puts "#{positional_matches} matching numbers are in the correct position."
+        puts "#{positional_matches} number(s) in the correct position."
     end
 
     def display_correct_number_clues
@@ -73,7 +73,7 @@ class PlayerBreaks
             index += 1
         end
 
-        puts "#{correct_numbers.uniq.size} matching numbers."
+        puts "#{correct_numbers.uniq.size} in the code."
 
     end
 
@@ -82,7 +82,7 @@ class PlayerBreaks
     end
 
     def game_over
-        puts "You didn't crack the code! Game over."
+        puts "You didn't crack the code! It was #{@cpu_code}. Game over."
     end
 end
 
